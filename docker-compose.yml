@@ -6,6 +6,7 @@ services:
       - db:/app/data
     environment:
       - FLASK_ENV=production
+
   nginx:
     image: nginx:latest
     ports:
@@ -17,12 +18,15 @@ services:
       - certs:/etc/nginx/certs:ro
     depends_on:
       - web
+      - certbot
+
   certbot:
     image: certbot/certbot:latest
     volumes:
       - certs:/etc/letsencrypt
       - certs-data:/var/lib/letsencrypt
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
 volumes:
   uploads:
   db:
