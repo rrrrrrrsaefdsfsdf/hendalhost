@@ -45,6 +45,13 @@
     }
     a {
         color: #000;
+        text-decoration: underline;
+    }
+    h1 {
+        color: #000;
+    }
+    p {
+        color: #000;
     }
 </style>
 
@@ -52,7 +59,7 @@
     <h1 class="mb-4">Ваш альбом</h1>
 
     <div class="mb-4">
-        <p class="mb-2">Поделитесь этой страницей: <a href="{{ request.url }}" class="text-decoration-underline">{{ request.url | truncate(30) }}</a></p>
+        <p class="mb-2">Поделитесь этой страницей: <a href="{{ request.url }}">{{ request.url | truncate(30) }}</a></p>
         <button class="btn btn-outline-primary btn-sm" onclick="copyToClipboard('{{ request.url }}')">Копировать</button>
     </div>
 
@@ -62,7 +69,7 @@
             <div class="card h-100">
                 <img src="{{ img }}" class="card-img-top" alt="Image">
                 <div class="card-body">
-                    <p class="card-text">Ссылка: <a href="{{ img }}" class="text-decoration-underline">{{ img | truncate(30) }}</a></p>
+                    <p class="card-text">Ссылка: <a href="{{ img }}">{{ img | truncate(30) }}</a></p>
                     <div class="d-flex gap-2">
                         <button class="btn btn-outline-primary btn-sm" onclick="copyToClipboard('{{ img }}')">Копировать</button>
                         <a href="{{ img }}" class="btn btn-outline-secondary btn-sm" download>Скачать</a>
