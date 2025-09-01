@@ -1,5 +1,5 @@
 #!/bin/bash
-docker-compose up -d
-docker-compose run --rm certbot certonly --webroot --webroot-path=/var/lib/letsencrypt -d sweets.promo
+docker-compose up -d web
+docker-compose run --rm certbot certonly --standalone -d sweets.promo --non-interactive --agree-tos --email memememe@gmail.com
 docker-compose down
 docker-compose up -d
