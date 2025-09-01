@@ -3,27 +3,27 @@
 {% block title %}Альбом - HendalHost{% endblock %}
 
 {% block content %}
-    <h1 class="text-center">Ваш альбом</h1>
-    <p class="text-center">Поделитесь этой страницей: <a href="{{ request.url }}" class="text-light" id="album-link">{{ request.url | truncate(30) }}</a>
-        <button class="btn btn-outline-light btn-sm ms-2" onclick="copyLink('album-link')">Копировать</button>
-    </p>
-    <div class="row">
+    Ваш альбом
+
+    <div class="share-section">
+        Поделитесь этой страницей: <span style="text-decoration: underline;">{{ request.url | truncate(30) }}</span>
+        <button onclick="navigator.clipboard.writeText('{{ request.url }}')">Копировать</button>
+    </div>
+
+    <div class="image-gallery">
         {% for img in images %}
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="{{ img }}" class="card-img-top" alt="фото">
-                    <div class="card-body text-center">
-                        <p class="card-text">Ссылка: <a href="{{ img }}" class="text-light" id="img-link-{{ loop.index }}">{{ img | truncate(30) }}</a>
-                            <button class="btn btn-outline-light btn-sm ms-2" onclick="copyLink('img-link-{{ loop.index }}')">Копировать</button>
-                        </p>
-                        <a href="{{ img }}" class="btn btn-outline-light btn-sm" download>Скачать</a>
-                    </div>
+            <div class="image-item">
+                <img src="{{ img }}" alt="Image">
+                <div class="image-links">
+                    Ссылка: <span style="text-decoration: underline;">{{ img | truncate(30) }}</span>
+                    <button onclick="navigator.clipboard.writeText('{{ img }}')">Копировать</button>
+                    <a href="{{ img }}" download>Скачать</a>
                 </div>
             </div>
         {% endfor %}
     </div>
-    <div class="text-center">
-        <a href="/" class="btn btn-outline-light btn-lg">Загрузить еще</a>
+
+    <div class="load-more">
+        <button>Загрузить еще</button>
     </div>
-    <script src="{{ url_for('static', filename='copy.js') }}"></script>
 {% endblock %}
