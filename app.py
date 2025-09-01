@@ -70,8 +70,8 @@ def index():
             today = datetime.date.today()
             c.execute('INSERT INTO albums (id, upload_date, expiration_days) VALUES (?, ?, ?)', (album_id, today, expiration_days))
             for file in files:
-                if file.filename:
-                    ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else ''
+                if file.filename and file.mimetype.startswith('image/'):
+                    ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else 'jpg'
                     filename = str(uuid.uuid4()) + '.' + ext
                     path = os.path.join(UPLOAD_FOLDER, filename)
                     file.save(path)
@@ -111,6 +111,10 @@ def uploaded_file(filename):
 @app.errorhandler(404)
 def not_found(e):
     return render_template('error.html', error_code=404, error_message='Страница не найдена'), 404
+
+@app.errorhandler(413)
+def too_large(e):
+    return render_template('error.html', error_code=413, error_message='Файл слишком большой'), 413
 
 @app.errorhandler(500)
 def server_error(e):
