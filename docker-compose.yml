@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   web:
     build: .
@@ -11,11 +10,21 @@ services:
     image: nginx:latest
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - uploads:/app/data/uploads
+      - certs:/etc/nginx/certs:ro
     depends_on:
       - web
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - certs:/etc/letsencrypt
+      - certs-data:/var/lib/letsencrypt
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 volumes:
   uploads:
   db:
+  certs:
+  certs-data:
