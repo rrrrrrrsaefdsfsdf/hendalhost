@@ -3,118 +3,41 @@
 {% block title %}Альбом - HendalHost{% endblock %}
 
 {% block content %}
-<style>
-    .container {
-        background-color: #fff;
-        color: #000;
-    }
-    .card {
-        border: 1px solid #000;
-        background-color: #fff;
-    }
-    .card-img-top {
-        filter: grayscale(100%);
-        border-bottom: 1px solid #000;
-    }
-    .btn-outline-primary {
-        color: #000;
-        border-color: #000;
-        background-color: #fff;
-    }
-    .btn-outline-primary:hover {
-        background-color: #000;
-        color: #fff;
-    }
-    .btn-outline-secondary {
-        color: #000;
-        border-color: #000;
-        background-color: #fff;
-    }
-    .btn-outline-secondary:hover {
-        background-color: #000;
-        color: #fff;
-    }
-    .btn-primary {
-        background-color: #000;
-        border-color: #000;
-        color: #fff;
-    }
-    .btn-primary:hover {
-        background-color: #333;
-        border-color: #333;
-    }
-    a {
-        color: #000;
-        text-decoration: underline;
-    }
-    h1 {
-        color: #000;
-    }
-    p {
-        color: #000;
-    }
-</style>
+<div class="container mt-4">
+    <h1>Ваш альбом</h1>
 
-<div class="container py-4">
-    <h1 class="mb-4">Ваш альбом</h1>
-
-    <div class="mb-4">
-        <p class="mb-2">Поделитесь этой страницей: <a href="{{ request.url }}">{{ request.url | truncate(30) }}</a></p>
-        <button class="btn btn-outline-primary btn-sm" onclick="copyToClipboard('{{ request.url }}')">Копировать</button>
+    <div class="mb-3">
+        <p>Поделитесь этой страницей: <a href="{{ request.url }}" class="text-decoration-underline">{{ request.url | truncate(30) }}</a>
+        <button class="btn btn-sm btn-outline-primary ms-2" onclick="copyToClipboard('{{ request.url }}')">Копировать</button>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row">
         {% for img in images %}
-        <div class="col">
-            <div class="card h-100">
-                <img src="{{ img }}" class="card-img-top" alt="Image">
+        <div class="col-md-4 mb-3">
+            <div class="card">
                 <div class="card-body">
-                    <p class="card-text">Ссылка: <a href="{{ img }}">{{ img | truncate(30) }}</a></p>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-outline-primary btn-sm" onclick="copyToClipboard('{{ img }}')">Копировать</button>
-                        <a href="{{ img }}" class="btn btn-outline-secondary btn-sm" download>Скачать</a>
-                    </div>
+                    <p>Ссылка: <a href="{{ img }}" class="text-decoration-underline">{{ img | truncate(30) }}</a></p>
+                    <button class="btn btn-sm btn-outline-primary me-2" onclick="copyToClipboard('{{ img }}')">Копировать</button>
+                    <a href="{{ img }}" class="btn btn-sm btn-outline-secondary" download>Скачать</a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
 
-    <div class="mt-4 text-center">
+    <div class="text-center mt-3">
         <button class="btn btn-primary">Загрузить еще</button>
     </div>
 </div>
 
 <script>
 function copyToClipboard(text) {
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text).then(() => {
-            alert('Ссылка скопирована!');
-        }).catch(err => {
-            console.error('Ошибка копирования: ', err);
-            fallbackCopyToClipboard(text);
-        });
-    } else {
-        fallbackCopyToClipboard(text);
-    }
-}
-
-function fallbackCopyToClipboard(text) {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
-    document.body.appendChild(textarea);
-    textarea.focus();
-    textarea.select();
-    try {
-        document.execCommand('copy');
-        alert('Ссылка скопирована!');
-    } catch (err) {
+    navigator.clipboard.writeText(text).then(() => {
+        alert('Ссылка скопирована в буфер обмена!');
+    }).catch(err => {
         console.error('Ошибка копирования: ', err);
         alert('Ошибка при копировании ссылки');
-    }
-    document.body.removeChild(textarea);
+    });
 }
 </script>
 {% endblock %}
