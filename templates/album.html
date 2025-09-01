@@ -5,7 +5,7 @@
 {% block content %}
 <h1 class="text-center">Ваш альбом</h1>
 <p class="text-center">Поделитесь этой страницей: <a href="{{ request.url }}" class="text-light text-decoration-underline">{{ request.url | truncate(30) }}</a>
-<button class="btn btn-outline-light btn-sm ms-2" onclick="copyToClipboard('{{ request.url }}')">Копировать</button></p>
+<button class="btn btn-outline-light btn-sm ms-2" onclick="copyToClipboard('{{ request.url | e }}')">Копировать</button></p>
 
 <div class="row">
     {% for img in images %}
@@ -14,7 +14,7 @@
             <img src="{{ img }}" class="card-img-top" alt="фото">
             <div class="card-body text-center">
                 <p class="card-text">Ссылка: <a href="{{ img }}" class="text-light text-decoration-underline">{{ img | truncate(30) }}</a></p>
-                <button class="btn btn-outline-light btn-sm me-2" onclick="copyToClipboard('{{ img }}')">Копировать</button>
+                <button class="btn btn-outline-light btn-sm me-2" onclick="copyToClipboard('{{ img | e }}')">Копировать</button>
                 <a href="{{ img }}" class="btn btn-outline-light btn-sm" download>Скачать</a>
             </div>
         </div>
@@ -28,12 +28,28 @@
 
 <script>
 function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        alert('Ссылка скопирована в буфер обмена!');
-    }).catch(err => {
-        console.error('Ошибка копирования: ', err);
-        alert('Ошибка при копировании ссылки');
-    });
+    const decodedText = decodeURIComponent(text);
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(decodedText).then(() => {
+            alert('Ссылка скопирована в буфер обмена!');
+        }).catch(err => {
+            console.error('Ошибка копирования: ', err);
+            alert('Ошибка при копировании ссылки. Попробуйте вручную.');
+        });
+    } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = decodedText;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            alert('Ссылка скопирована в буфер обмена!');
+        } catch (err) {
+            console.error('Ошибка копирования: ', err);
+            alert('Ошибка при копировании ссылки. Попробуйте вручную.');
+        }
+        document.body.removeChild(textarea);
+    }
 }
 </script>
 {% endblock %}
