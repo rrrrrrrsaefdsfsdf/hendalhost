@@ -1,3 +1,4 @@
+version: '3.8'
 services:
   web:
     build: .
@@ -6,28 +7,24 @@ services:
       - db:/app/data
     environment:
       - FLASK_ENV=production
-
   nginx:
     image: nginx:latest
     ports:
       - "80:80"
-      - "443:443"
+      - "443:443"  # Добавляем порт для HTTPS
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - uploads:/app/data/uploads
-      - certs:/etc/nginx/certs:ro
+      - certbot-certs:/etc/letsencrypt  # Для хранения сертификатов
     depends_on:
       - web
-      - certbot
-
   certbot:
     image: certbot/certbot:latest
     volumes:
-      - certs:/etc/letsencrypt
-      - certs-data:/var/lib/letsencrypt
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew && nginx -s reload; sleep 12h & wait $${!}; done;'"
+      - certbot-certs:/etc/letsencrypt
+    depends_on:
+      - nginx
 volumes:
   uploads:
   db:
-  certs:
-  certs-data:
+  certbot-certs:  # Новый том для сертификатов
