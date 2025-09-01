@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Ошибка - HendalHost{% endblock %}
+
+{% block content %}
+    <div class="hero text-center">
+        <h1>Ошибка {{ error_code }}</h1>
+        <p>{{ error_message }}</p>
+        <a href="/" class="btn btn-outline-light btn-lg">Вернуться на главную</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Альбом - HendalHost{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Ваш альбом</h1>
+    <p class="text-center">Поделитесь этой страницей: {{ request.url }}</p>
+    <div class="row">
+        {% for img in images %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ img }}" class="card-img-top" alt="фото">
+                    <div class="card-body text-center">
+                        <p class="card-text">Ссылка: <a href="{{ img }}" class="text-light">{{ img | truncate(30) }}</a></p>
+                        <a href="{{ img }}" class="btn btn-outline-light btn-sm" download>Скачать</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="text-center">
+        <a href="/" class="btn btn-outline-light btn-lg">Загрузить еще</a>
+    </div>
+{% endblock %}

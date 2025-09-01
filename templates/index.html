@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - HendalHost{% endblock %}
+
+{% block content %}
+    <div class="hero text-center">
+        <h1>HendalHost - Анонимный хостинг фотографий</h1>
+        <p>Загружайте фотографии анонимно. EXIF-данные будут удалены. Выберите срок хранения.</p>
+    </div>
+    <form method="post" enctype="multipart/form-data" class="mt-4">
+        <div class="mb-3">
+            <label for="files" class="form-label">Выберите фотографии (можно несколько для альбома)</label>
+            <input type="file" class="form-control" id="files" name="files" multiple>
+        </div>
+        <div class="mb-3">
+            <label for="expiration" class="form-label">Срок хранения</label>
+            <select class="form-select" id="expiration" name="expiration">
+                <option value="1">1 день</option>
+                <option value="7">7 дней</option>
+                <option value="30">30 дней</option>
+                <option value="180" selected>180 дней</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-outline-light btn-lg">Загрузить</button>
+    </form>
+{% endblock %}

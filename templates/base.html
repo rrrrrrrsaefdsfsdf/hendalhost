@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}HendalHost{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body { background-color: #121212; color: #ffffff; }
+        .hero { background-color: #212121; border: 1px solid #343a40; border-radius: 10px; padding: 40px; }
+        .card { background-color: #212121; border: 1px solid #343a40; }
+        .card:hover { border-color: #ffffff; transition: border-color 0.3s; }
+        a.text-light:hover { color: #adb5bd !important; }
+        .btn-outline-light { border-color: #ffffff; }
+        .btn-outline-light:hover { background-color: #ffffff; color: #000000; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">HendalHost</a>
+        </div>
+    </nav>
+    <main class="container mt-5">
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="bg-dark text-center py-3 mt-5">
+        <p class="text-muted">HendalHost &copy; 2025. Анонимный хостинг фото.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
