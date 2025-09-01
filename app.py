@@ -14,8 +14,13 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 def init_db():
     conn = sqlite3.connect(DB)
     c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS albums (id TEXT PRIMARY KEY, upload_date DATE, expiration_days INTEGER)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS albums (id TEXT PRIMARY KEY, upload_date DATE)''')
     c.execute('''CREATE TABLE IF NOT EXISTS images (album_id TEXT, filename TEXT)''')
+    c.execute('''PRAGMA table_info(albums)''')
+    columns = [col[1] for col in c.fetchall()]
+    if 'expiration_days' not in columns:
+        c.execute('''ALTER TABLE albums ADD COLUMN expiration_days INTEGER''')
+        c.execute('''UPDATE albums SET expiration_days = 180 WHERE expiration_days IS NULL''')
     conn.commit()
     conn.close()
 
