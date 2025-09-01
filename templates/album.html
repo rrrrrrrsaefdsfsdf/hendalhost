@@ -3,27 +3,66 @@
 {% block title %}Альбом - HendalHost{% endblock %}
 
 {% block content %}
-    Ваш альбом
+<div class="container py-4">
+    <h1 class="mb-4">Ваш альбом</h1>
 
-    <div class="share-section">
-        Поделитесь этой страницей: <span style="text-decoration: underline;">{{ request.url | truncate(30) }}</span>
-        <button onclick="navigator.clipboard.writeText('{{ request.url }}')">Копировать</button>
+    <div class="mb-4">
+        <p class="mb-2">Поделитесь этой страницей: <a href="{{ request.url }}" class="text-decoration-underline">{{ request.url | truncate(30) }}</a></p>
+        <button class="btn btn-outline-primary btn-sm" onclick="copyToClipboard('{{ request.url }}')">Копировать</button>
     </div>
 
-    <div class="image-gallery">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for img in images %}
-            <div class="image-item">
-                <img src="{{ img }}" alt="Image">
-                <div class="image-links">
-                    Ссылка: <span style="text-decoration: underline;">{{ img | truncate(30) }}</span>
-                    <button onclick="navigator.clipboard.writeText('{{ img }}')">Копировать</button>
-                    <a href="{{ img }}" download>Скачать</a>
+        <div class="col">
+            <div class="card h-100">
+                <img src="{{ img }}" class="card-img-top" alt="Image">
+                <div class="card-body">
+                    <p class="card-text">Ссылка: <a href="{{ img }}" class="text-decoration-underline">{{ img | truncate(30) }}</a></p>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary btn-sm" onclick="copyToClipboard('{{ img }}')">Копировать</button>
+                        <a href="{{ img }}" class="btn btn-outline-secondary btn-sm" download>Скачать</a>
+                    </div>
                 </div>
             </div>
+        </div>
         {% endfor %}
     </div>
 
-    <div class="load-more">
-        <button>Загрузить еще</button>
+    <div class="mt-4 text-center">
+        <button class="btn btn-primary">Загрузить еще</button>
     </div>
+</div>
+
+<script>
+function copyToClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Ссылка скопирована!');
+        }).catch(err => {
+            console.error('Ошибка копирования: ', err);
+            fallbackCopyToClipboard(text);
+        });
+    } else {
+        fallbackCopyToClipboard(text);
+    }
+}
+
+function fallbackCopyToClipboard(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    try {
+        document.execCommand('copy');
+        alert('Ссылка скопирована!');
+    } catch (err) {
+        console.error('Ошибка копирования: ', err);
+        alert('Ошибка при копировании ссылки');
+    }
+    document.body.removeChild(textarea);
+}
+</script>
 {% endblock %}
